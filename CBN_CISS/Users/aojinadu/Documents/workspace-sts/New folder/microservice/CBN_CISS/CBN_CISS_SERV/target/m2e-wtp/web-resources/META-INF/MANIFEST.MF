@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: resourceserv
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: aojinadu
+Implementation-Vendor-Id: com.ubn.ciss
+Build-Jdk: 1.8.0_201
+Implementation-URL: http://projects.spring.io/spring-boot/CBN_CISS/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
