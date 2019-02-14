@@ -1,5 +1,9 @@
 package com.ubn.ciss.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({"Nuban","TIN","RCNumber"})
 public class ListTIN_RCNo {
 
 	String Nuban;
@@ -8,6 +12,7 @@ public class ListTIN_RCNo {
 	
 	public ListTIN_RCNo() {}
 
+	@JsonProperty("Nuban")
 	public String getNuban() {
 		return this.Nuban;
 	}
@@ -16,6 +21,7 @@ public class ListTIN_RCNo {
 		this.Nuban = Nuban;
 	}
 
+	@JsonProperty("TIN")
 	public String getTIN() {
 		return this.TIN;
 	}
@@ -24,6 +30,7 @@ public class ListTIN_RCNo {
 		this.TIN = TIN;
 	}
 
+	@JsonProperty("RCNumber")
 	public String getRCNumber() {
 		return this.RCNumber;
 	}

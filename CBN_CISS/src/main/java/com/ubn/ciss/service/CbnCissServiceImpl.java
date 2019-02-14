@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
+import com.ubn.ciss.model.ActiveTIN;
 import com.ubn.ciss.model.ClosedStatistics;
 import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
@@ -98,17 +99,17 @@ public class CbnCissServiceImpl implements CbnCissService {
 	}
 
 	@Override
-	public cbnServiceResponse ActiveTIN() {
-		return cbnCissRepositoryImpl.ActiveTIN();
+	public ActiveTIN getActiveTIN() {
+		return cbnCissRepositoryImpl.getActiveTIN();
 	}
 
 	@Override
-	public cbnServiceResponse ActiveRCNo() {
+	public ActiveTIN ActiveRCNo() {
 		return cbnCissRepositoryImpl.ActiveRCNo();
 	}
 
 	@Override
-	public cbnServiceResponse ActiveNIN() {
+	public ActiveTIN ActiveNIN() {
 		return cbnCissRepositoryImpl.ActiveNIN();
 	}
 

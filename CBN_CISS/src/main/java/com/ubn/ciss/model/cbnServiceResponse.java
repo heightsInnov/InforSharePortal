@@ -1,5 +1,7 @@
 package com.ubn.ciss.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class cbnServiceResponse {
 
 	private String status;
@@ -18,18 +20,23 @@ public class cbnServiceResponse {
 		Result = result;
 	}
 	
+	@JsonProperty("status")
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	@JsonProperty("Msg")
 	public String getMsg() {
 		return Msg;
 	}
 	public void setMsg(String msg) {
 		Msg = msg;
 	}
+	
+	@JsonProperty("Result")
 	public Object getResult() {
 		return Result;
 	}

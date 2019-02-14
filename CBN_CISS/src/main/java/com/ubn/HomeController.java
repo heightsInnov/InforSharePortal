@@ -1,5 +1,6 @@
 package com.ubn;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
+import com.ubn.ciss.model.ActiveTIN;
 import com.ubn.ciss.model.ClosedStatistics;
 import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
@@ -80,17 +82,17 @@ public class HomeController {
 	}
 	
 	@GetMapping("/ActiveTIN")
-	public @ResponseBody cbnServiceResponse showActiveTIN() {
-		return cbnCissService.ActiveTIN();
+	public @ResponseBody ActiveTIN showActiveTIN() {
+		return cbnCissService.getActiveTIN();
 	}
 	
 	@GetMapping("/ActiveRCNo")
-	public @ResponseBody cbnServiceResponse showActiveRCNo() {
+	public @ResponseBody ActiveTIN showActiveRCNo() {
 		return cbnCissService.ActiveRCNo();
 	}
 	
 	@GetMapping("/ActiveNIN")
-	public @ResponseBody cbnServiceResponse showActiveNIN() {
+	public @ResponseBody ActiveTIN showActiveNIN() {
 		return cbnCissService.ActiveNIN();
 	}
 	

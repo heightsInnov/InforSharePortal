@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.ubn.ciss.model.ActiveTIN;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -459,12 +460,11 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 	}
 
 	@Override
-	public cbnServiceResponse ActiveTIN() {
+	public ActiveTIN getActiveTIN() {
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		Map<String, String> dataset = new HashMap<String, String>();
-		cbnresp = new cbnServiceResponse("99", "Error", null);
+		ActiveTIN dataset = new ActiveTIN("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -475,27 +475,24 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
-						dataset.put("Percentage", rs.getString("PERCENTAGE_OF_ACCTIVE_CORP_TIN"));
+						dataset = new ActiveTIN("00", "Successful", rs.getString("PERCENTAGE_OF_ACCTIVE_CORP_TIN"));
 					}
-				} else
-					dataset = null;
-				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return cbnresp;
+		return dataset;
 	}
 
 	@Override
-	public cbnServiceResponse ActiveRCNo() {
+	public ActiveTIN ActiveRCNo() {
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		Map<String, String> dataset = new HashMap<String, String>();
-		cbnresp = new cbnServiceResponse("99", "Error", null);
+		ActiveTIN dataset = new ActiveTIN("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -506,27 +503,25 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
-						dataset.put("Percentage", rs.getString("PERTGE_OF_ACCTIVE_CORP_RCNO"));
+						dataset = new ActiveTIN("00", "Successful", rs.getString("PERTGE_OF_ACCTIVE_CORP_RCNO"));
 					}
 				} else
 					dataset = null;
-				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return cbnresp;
+		return dataset;
 	}
 
 	@Override
-	public cbnServiceResponse ActiveNIN() {
+	public ActiveTIN ActiveNIN() {
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		Map<String, String> dataset = new HashMap<String, String>();
-		cbnresp = new cbnServiceResponse("99", "Error", null);
+		ActiveTIN dataset = new ActiveTIN("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -537,11 +532,9 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
-						dataset.put("Percentage", rs.getString("pertge_of_acctive_corp_NIN"));
+						dataset = new ActiveTIN("00", "Successful", rs.getString("pertge_of_acctive_corp_NIN"));
 					}
-				} else
-					dataset = null;
-				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -549,7 +542,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
 
-		return cbnresp;
+		return dataset;
 	}
 
 	@Override

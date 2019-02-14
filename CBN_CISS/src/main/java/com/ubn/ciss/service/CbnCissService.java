@@ -2,6 +2,7 @@ package com.ubn.ciss.service;
 
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
+import com.ubn.ciss.model.ActiveTIN;
 import com.ubn.ciss.model.ClosedStatistics;
 import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
@@ -19,9 +20,9 @@ public interface CbnCissService {
 	cbnServiceResponse ListAccountsByRCNo(String RCNo);
 	cbnServiceResponse ListAccountsByTIN(String TIN);
 	cbnServiceResponse ListAccountsByNIN(String NIN);
-	cbnServiceResponse ActiveTIN();
-	cbnServiceResponse ActiveRCNo();
-	cbnServiceResponse ActiveNIN();
+	ActiveTIN getActiveTIN();
+	ActiveTIN ActiveRCNo();
+	ActiveTIN ActiveNIN();
 	cbnServiceResponse LstTIN_RCNo();
 	cbnServiceResponse pr_ListInternalAccounts(String ledgerCode);
 	cbnServiceResponse pr_ListInternalAccountFull(String ledgerCodes);

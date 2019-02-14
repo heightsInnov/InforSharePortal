@@ -1,5 +1,9 @@
 package com.ubn.ciss.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({"BeneficiaryAccountNo","BeneficiaryBank","InitiatedDate","PaymentDate","Type"})
 public class PendingDebits {
 
 	private String BeneficiaryAccountNo;
@@ -12,6 +16,7 @@ public class PendingDebits {
 	public PendingDebits() {}
 
 
+	@JsonProperty("BeneficiaryAccountNo")
 	public String getBeneficiaryAccountNo() {
 		return BeneficiaryAccountNo;
 	}
@@ -21,7 +26,7 @@ public class PendingDebits {
 		this.BeneficiaryAccountNo = BeneficiaryAccountNo;
 	}
 
-
+	@JsonProperty("BeneficiaryBank")
 	public String getBeneficiaryBank() {
 		return BeneficiaryBank;
 	}
@@ -31,7 +36,7 @@ public class PendingDebits {
 		this.BeneficiaryBank = BeneficiaryBank;
 	}
 
-
+	@JsonProperty("InitiatedDate")
 	public String getInitiatedDate() {
 		return InitiatedDate;
 	}
@@ -41,7 +46,7 @@ public class PendingDebits {
 		this.InitiatedDate = InitiatedDate;
 	}
 
-
+	@JsonProperty("PaymentDate")
 	public String getPaymentDate() {
 		return PaymentDate;
 	}
@@ -51,7 +56,7 @@ public class PendingDebits {
 		this.PaymentDate = PaymentDate;
 	}
 
-
+	@JsonProperty("Type")
 	public String getType() {
 		return Type;
 	}
