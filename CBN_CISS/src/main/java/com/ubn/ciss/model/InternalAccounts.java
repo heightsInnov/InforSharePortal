@@ -2,19 +2,13 @@ package com.ubn.ciss.model;
 
 public class InternalAccounts {
 
-	private String nuban;
-	private String nonNuban;
-	
-	public String getNuban() {
-		return nuban;
+	private String AccountNo;
+
+	public String getAccountNo() {
+		return AccountNo;
 	}
-	public void setNuban(String nuban) {
-		this.nuban = nuban;
-	}
-	public String getNonNuban() {
-		return nonNuban;
-	}
-	public void setNonNuban(String nonNuban) {
-		this.nonNuban = nonNuban;
+
+	public void setAccountNo(String AccountNo) {
+		this.AccountNo = AccountNo;
 	}
 }

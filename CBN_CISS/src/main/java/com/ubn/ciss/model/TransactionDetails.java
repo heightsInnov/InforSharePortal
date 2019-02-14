@@ -1,43 +1,35 @@
 package com.ubn.ciss.model;
 
 public class TransactionDetails {
-	private String tra_Date;
-	private String val_Date;
-	private String currency;
-	private String tra_Amt;
-	private String tra_Type;
+	private String Name;
+	private String TRA_DATE;
+	private String Val_DATE;
 	private String Narration;
-	private String tra_Bal;
+	private String Currency;
+	private String TRA_AMT;
+	private String TRA_TYPE;
+	private String DR_AMT;
+	private String CR_AMT;
+	private String START_BAL;
+	private String TRA_BAL;
 	
-	public String getTra_Date() {
-		return tra_Date;
+	public String getName() {
+		return Name;
 	}
-	public void setTra_Date(String tra_Date) {
-		this.tra_Date = tra_Date;
+	public void setName(String name) {
+		Name = name;
 	}
-	public String getVal_Date() {
-		return val_Date;
+	public String getTRA_DATE() {
+		return TRA_DATE;
 	}
-	public void setVal_Date(String val_Date) {
-		this.val_Date = val_Date;
+	public void setTRA_DATE(String tRA_DATE) {
+		TRA_DATE = tRA_DATE;
 	}
-	public String getCurrency() {
-		return currency;
+	public String getVal_DATE() {
+		return Val_DATE;
 	}
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-	public String getTra_Amt() {
-		return tra_Amt;
-	}
-	public void setTra_Amt(String tra_Amt) {
-		this.tra_Amt = tra_Amt;
-	}
-	public String getTra_Type() {
-		return tra_Type;
-	}
-	public void setTra_Type(String tra_Type) {
-		this.tra_Type = tra_Type;
+	public void setVal_DATE(String val_DATE) {
+		Val_DATE = val_DATE;
 	}
 	public String getNarration() {
 		return Narration;
@@ -45,10 +37,46 @@ public class TransactionDetails {
 	public void setNarration(String narration) {
 		Narration = narration;
 	}
-	public String getTra_Bal() {
-		return tra_Bal;
+	public String getCurrency() {
+		return Currency;
 	}
-	public void setTra_Bal(String tra_Bal) {
-		this.tra_Bal = tra_Bal;
+	public void setCurrency(String currency) {
+		this.Currency = currency;
+	}
+	public String getTRA_AMT() {
+		return TRA_AMT;
+	}
+	public void setTRA_AMT(String tRA_AMT) {
+		TRA_AMT = tRA_AMT;
+	}
+	public String getTRA_TYPE() {
+		return TRA_TYPE;
+	}
+	public void setTRA_TYPE(String tRA_TYPE) {
+		TRA_TYPE = tRA_TYPE;
+	}
+	public String getDR_AMT() {
+		return DR_AMT;
+	}
+	public void setDR_AMT(String dR_AMT) {
+		DR_AMT = dR_AMT;
+	}
+	public String getCR_AMT() {
+		return CR_AMT;
+	}
+	public void setCR_AMT(String cR_AMT) {
+		CR_AMT = cR_AMT;
+	}
+	public String getSTART_BAL() {
+		return START_BAL;
+	}
+	public void setSTART_BAL(String sTART_BAL) {
+		START_BAL = sTART_BAL;
+	}
+	public String getTRA_BAL() {
+		return TRA_BAL;
+	}
+	public void setTRA_BAL(String tRA_BAL) {
+		TRA_BAL = tRA_BAL;
 	}
 }

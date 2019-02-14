@@ -8,8 +8,8 @@ public class SignatoriesWithNIN extends Signatories{
 		return NIN;
 	}
 
-	public void setNIN(String nIN) {
-		NIN = nIN;
+	public void setNIN(String NIN) {
+		this.NIN = NIN;
 	}
 	
 	

@@ -2,20 +2,20 @@ package com.ubn.ciss.model;
 
 public class TransactionDetailsChannels extends TransactionDetails{
 
-	private String Tra_Channel;
-	private String Payment_Type;
+	private String TRA_CHANNEL;
+	private String Payment_type;
 	
-	public String getTra_Channel() {
-		return Tra_Channel;
+	public String getTRA_CHANNEL() {
+		return TRA_CHANNEL;
 	}
-	public void setTra_Channel(String tra_Channel) {
-		Tra_Channel = tra_Channel;
+	public void setTRA_CHANNEL(String TRA_CHANNEL) {
+		this.TRA_CHANNEL = TRA_CHANNEL;
 	}
 	public String getPayment_Type() {
-		return Payment_Type;
+		return Payment_type;
 	}
-	public void setPayment_Type(String payment_Type) {
-		Payment_Type = payment_Type;
+	public void setPayment_Type(String Payment_type) {
+		this.Payment_type = Payment_type;
 	}
 
 }

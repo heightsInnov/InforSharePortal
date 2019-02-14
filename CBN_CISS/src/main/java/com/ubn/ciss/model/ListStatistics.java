@@ -1,48 +1,48 @@
 package com.ubn.ciss.model;
 
-public class ListStatistics {
+public class ListStatistics extends cbnResponse2{
 
-	private String activeAccounts;
-	private String activeCorporate;
-	private String activeindividual;
-	private String activeTier1;
-	private String activeTier2;
-	private String activeTier3;
+	private String ActiveAccounts;
+	private String ActiveCorporate;
+	private String Activeindividual;
+	private String ActiveTier1;
+	private String ActiveTier2;
+	private String ActiveTier3;
 	
 	public String getActiveAccounts() {
-		return activeAccounts;
+		return ActiveAccounts;
 	}
-	public void setActiveAccounts(String activeAccounts) {
-		this.activeAccounts = activeAccounts;
+	public void setActiveAccounts(String ActiveAccounts) {
+		this.ActiveAccounts = ActiveAccounts;
 	}
 	public String getActiveCorporate() {
-		return activeCorporate;
+		return ActiveCorporate;
 	}
-	public void setActiveCorporate(String activeCorporate) {
-		this.activeCorporate = activeCorporate;
+	public void setActiveCorporate(String ActiveCorporate) {
+		this.ActiveCorporate = ActiveCorporate;
 	}
 	public String getActiveindividual() {
-		return activeindividual;
+		return Activeindividual;
 	}
-	public void setActiveindividual(String activeindividual) {
-		this.activeindividual = activeindividual;
+	public void setActiveindividual(String Activeindividual) {
+		this.Activeindividual = Activeindividual;
 	}
 	public String getActiveTier1() {
-		return activeTier1;
+		return ActiveTier1;
 	}
-	public void setActiveTier1(String activeTier1) {
-		this.activeTier1 = activeTier1;
+	public void setActiveTier1(String ActiveTier1) {
+		this.ActiveTier1 = ActiveTier1;
 	}
 	public String getActiveTier2() {
-		return activeTier2;
+		return ActiveTier2;
 	}
-	public void setActiveTier2(String activeTier2) {
-		this.activeTier2 = activeTier2;
+	public void setActiveTier2(String ActiveTier2) {
+		this.ActiveTier2 = ActiveTier2;
 	}
 	public String getActiveTier3() {
-		return activeTier3;
+		return ActiveTier3;
 	}
-	public void setActiveTier3(String activeTier3) {
-		this.activeTier3 = activeTier3;
+	public void setActiveTier3(String ActiveTier3) {
+		this.ActiveTier3 = ActiveTier3;
 	}
 }

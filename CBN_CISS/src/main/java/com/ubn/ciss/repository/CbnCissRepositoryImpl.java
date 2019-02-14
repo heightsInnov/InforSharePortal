@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,7 @@ import com.ubn.ciss.model.Signatories;
 import com.ubn.ciss.model.SignatoriesWithNIN;
 import com.ubn.ciss.model.TransactionDetails;
 import com.ubn.ciss.model.TransactionDetailsChannels;
+import com.ubn.ciss.model.cbnServiceResponse;
 import com.ubn.ciss.utils.DBConnect;
 import com.ubn.ciss.model.ListTIN_RCNo;
 
@@ -31,13 +34,17 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 	@Autowired
 	DBConnect dBConnect;
 
+	@Autowired
+	cbnServiceResponse cbnresp;
+
 	@Override
-	public TransactionDetails pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
+	public cbnServiceResponse pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		TransactionDetails dataset = new TransactionDetails();
+		List<TransactionDetails> data = new ArrayList<>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -51,16 +58,23 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(4);
 				if (rs != null) {
 					while (rs.next()) {
-						dataset.setTra_Date(rs.getString("TRA_DATE"));
-						dataset.setVal_Date(rs.getString("VAL_DATE"));
-						dataset.setCurrency(rs.getString("CURRENCY"));
-						dataset.setTra_Amt(rs.getString("TRA_AMT"));
-						dataset.setTra_Type(rs.getString("TRA_TYPE"));
+						TransactionDetails dataset = new TransactionDetails();
+						dataset.setTRA_DATE(rs.getString("TRA_DATE"));
+						dataset.setVal_DATE(rs.getString("VAL_DATE"));
 						dataset.setNarration(rs.getString("NARRATION"));
-						dataset.setTra_Bal(rs.getString("TRA_BAL"));
+						dataset.setCurrency(rs.getString("CURRENCY"));
+						dataset.setTRA_AMT(rs.getString("TRA_AMT"));
+						dataset.setTRA_TYPE(rs.getString("TRA_TYPE"));
+						dataset.setDR_AMT(rs.getString("DR_AMT"));
+						dataset.setCR_AMT(rs.getString("CR_AMT"));
+						dataset.setSTART_BAL(rs.getString("START_BAL"));
+						dataset.setTRA_BAL(rs.getString("TRA_BAL"));
+						
+						data.add(dataset);
 					}
 				} else
-					dataset = null;
+					data = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", data);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -68,16 +82,17 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public TransactionDetailsChannels pr_transactiondetailschannels(String StartDt, String EndDt, String AccNo) {
+	public cbnServiceResponse pr_transactiondetailschannels(String StartDt, String EndDt, String AccNo) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		TransactionDetailsChannels dataset = new TransactionDetailsChannels();
+		List<TransactionDetailsChannels> data = new ArrayList<>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -91,18 +106,24 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(4);
 				if (rs != null) {
 					while (rs.next()) {
-						dataset.setTra_Date(rs.getString("TRA_DATE"));
-						dataset.setVal_Date(rs.getString("VAL_DATE"));
-						dataset.setCurrency(rs.getString("CURRENCY"));
-						dataset.setTra_Amt(rs.getString("TRA_AMT"));
-						dataset.setTra_Type(rs.getString("TRA_TYPE"));
+						TransactionDetailsChannels dataset = new TransactionDetailsChannels();
+						dataset.setTRA_DATE(rs.getString("TRA_DATE"));
+						dataset.setVal_DATE(rs.getString("VAL_DATE"));
 						dataset.setNarration(rs.getString("NARRATION"));
-						dataset.setTra_Bal(rs.getString("TRA_BAL"));
-						dataset.setTra_Channel(rs.getString("TRA_CHANNEL"));
+						dataset.setCurrency(rs.getString("CURRENCY"));
+						dataset.setTRA_AMT(rs.getString("TRA_AMT"));
+						dataset.setTRA_TYPE(rs.getString("TRA_TYPE"));
+						dataset.setDR_AMT(rs.getString("DR_AMT"));
+						dataset.setCR_AMT(rs.getString("CR_AMT"));
+						dataset.setTRA_BAL(rs.getString("TRA_BAL"));
+						dataset.setTRA_CHANNEL(rs.getString("TRA_CHANNEL"));
 						dataset.setPayment_Type(rs.getString("PAYMENT_TYPE"));
+						
+						data.add(dataset);
 					}
 				} else
-					dataset = null;
+					data = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", data);
 			}
 		} catch (Exception e) {
 			// TODO: handle finally clause
@@ -110,7 +131,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
@@ -131,20 +152,23 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
+						dataset.setStatus("00");
+						dataset.setMsg("Successful");
 						dataset.setName(rs.getString("ACCOUNT_HOLDER"));
 						dataset.setType(rs.getString("ACCOUNT_TYPE"));
-						dataset.setStatus(rs.getString("STATUS"));
-						dataset.setBVN(rs.getString("BVN"));
 						dataset.setCategory(rs.getString("CATEGORY"));
+						dataset.setTier(rs.getString("TIER"));
 						dataset.setCLR_BAL(rs.getString("CLR_BAL"));
 						dataset.setAVL_BAL(rs.getString("AVL_BAL"));
-						dataset.setNuban(rs.getString("NUBAN"));
+						dataset.setAccountNo(rs.getString("ACCOUNTNO"));
 						dataset.setAddress(rs.getString("ADDRESS"));
 						dataset.setEmail(rs.getString("EMAIL").toLowerCase());
 						dataset.setTelephone(rs.getString("TELEPHONE"));
 						dataset.setCurrency(rs.getString("CURRENCY"));
 						dataset.setAOD(rs.getString("AOD"));
+						dataset.setBVN(rs.getString("BVN"));
 						dataset.setAccount_Status(rs.getString("ACCOUNT_STATUS"));
+						dataset.setRestriction_Status(rs.getString("RESTRICTION_STATUS"));
 					}
 				} else
 					dataset = null;
@@ -176,23 +200,26 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
+						dataset.setStatus("00");
+						dataset.setMsg("Successful");
 						dataset.setName(rs.getString("ACCOUNT_HOLDER"));
 						dataset.setType(rs.getString("ACCOUNT_TYPE"));
-						dataset.setStatus(rs.getString("STATUS"));
-						dataset.setBVN(rs.getString("BVN"));
 						dataset.setCategory(rs.getString("CATEGORY"));
+						dataset.setTier(rs.getString("TIER"));
 						dataset.setCLR_BAL(rs.getString("CLR_BAL"));
 						dataset.setAVL_BAL(rs.getString("AVL_BAL"));
-						dataset.setNuban(rs.getString("NUBAN"));
+						dataset.setAccountNo(rs.getString("ACCOUNTNO"));
 						dataset.setAddress(rs.getString("ADDRESS"));
 						dataset.setEmail(rs.getString("EMAIL").toLowerCase());
 						dataset.setTelephone(rs.getString("TELEPHONE"));
 						dataset.setCurrency(rs.getString("CURRENCY"));
 						dataset.setAOD(rs.getString("AOD"));
+						dataset.setBVN(rs.getString("BVN"));
 						dataset.setAccount_Status(rs.getString("ACCOUNT_STATUS"));
+						dataset.setRestriction_Status(rs.getString("RESTRICTION_STATUS"));
 						dataset.setTax_ID_Number(rs.getString("TAX_ID_NUMBER"));
-						dataset.setRC_Number(rs.getString("RC_NUMBER"));
 						dataset.setNIN(rs.getString("NIN"));
+						dataset.setRC_Number(rs.getString("RC_NUMBER"));
 					}
 				} else
 					dataset = null;
@@ -207,13 +234,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 	}
 
 	@Override
-	public Signatories pr_signatories(String AccNo) {
+	public cbnServiceResponse pr_signatories(String AccNo) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		Signatories dataset = new Signatories();
-
+		List<Signatories> data = new ArrayList<>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 		try {
 			conn = dBConnect.getConn();
 			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_signatoriesWithNIN(?,?)}");
@@ -224,28 +251,34 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
+						Signatories dataset = new Signatories();
 						dataset.setName(rs.getString("NAME"));
 						dataset.setBVN(rs.getString("BVN"));
 						dataset.setDate_of_birth(rs.getString("DATE_OF_BIRTH"));
+
+						data.add(dataset);
 					}
-				} else
-					dataset = null;
+				} else {
+					data = null;
+				}
+				cbnresp = new cbnServiceResponse("00", "Successful", data);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public SignatoriesWithNIN pr_signatoriesWithNIN(String AccNo) {
+	public cbnServiceResponse pr_signatoriesWithNIN(String AccNo) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		SignatoriesWithNIN dataset = new SignatoriesWithNIN();
+		List<SignatoriesWithNIN> data = new ArrayList<>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -257,29 +290,34 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
+						SignatoriesWithNIN dataset = new SignatoriesWithNIN();
 						dataset.setName(rs.getString("NAME"));
 						dataset.setBVN(rs.getString("BVN"));
 						dataset.setDate_of_birth(rs.getString("DATE_OF_BIRTH"));
 						dataset.setNIN(rs.getString("NIN"));
+
+						data.add(dataset);
 					}
 				} else
-					dataset = null;
+					data = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", data);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public List<ListAccountsByBVN> pr_listAccountsByBVN(String BVN) {
+	public cbnServiceResponse pr_listAccountsByBVN(String BVN) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
 		List<ListAccountsByBVN> dataset = new ArrayList<ListAccountsByBVN>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -301,22 +339,24 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public List<String> ListAccountsByRCNo(String RCNo) {
+	public cbnServiceResponse ListAccountsByRCNo(String RCNo) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		List<String> dataset = new ArrayList<String>();
+		List<Map<String, String>> dataset = new ArrayList<Map<String, String>>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -328,28 +368,31 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
-						String Nuban = rs.getString("NUBAN");
+						Map<String, String> acc = new HashMap<String, String>();
+						acc.put("Nuban", rs.getString("NUBAN"));
 
-						dataset.add(Nuban);
+						dataset.add(acc);
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public List<String> ListAccountsByTIN(String TIN) {
+	public cbnServiceResponse ListAccountsByTIN(String TIN) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		List<String> dataset = new ArrayList<String>();
+		List<Map<String, String>> dataset = new ArrayList<Map<String, String>>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -361,28 +404,31 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
-						String Nuban = rs.getString("NUBAN");
+						Map<String, String> acc = new HashMap<String, String>();
+						acc.put("Nuban", rs.getString("NUBAN"));
 
-						dataset.add(Nuban);
+						dataset.add(acc);
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public List<String> ListAccountsByNIN(String NIN) {
+	public cbnServiceResponse ListAccountsByNIN(String NIN) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		List<String> dataset = new ArrayList<String>();
+		List<Map<String, String>> dataset = new ArrayList<Map<String, String>>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -394,27 +440,30 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
-						String Nuban = rs.getString("NUBAN");
+						Map<String, String> acc = new HashMap<String, String>();
+						acc.put("Nuban", rs.getString("NUBAN"));
 
-						dataset.add(Nuban);
+						dataset.add(acc);
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public String ActiveTIN() {
+	public cbnServiceResponse ActiveTIN() {
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		String Percentage = null;
+		Map<String, String> dataset = new HashMap<String, String>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -425,26 +474,27 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
-						Percentage = rs.getString("PERCENTAGE_OF_ACCTIVE_CORP_TIN");
+						dataset.put("Percentage", rs.getString("PERCENTAGE_OF_ACCTIVE_CORP_TIN"));
 					}
 				} else
-					Percentage = null;
+					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-
-		return Percentage;
+		return cbnresp;
 	}
 
 	@Override
-	public String ActiveRCNo() {
+	public cbnServiceResponse ActiveRCNo() {
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		String Percentage = null;
+		Map<String, String> dataset = new HashMap<String, String>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -455,26 +505,27 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
-						Percentage = rs.getString("PERTGE_OF_ACCTIVE_CORP_RCNO");
+						dataset.put("Percentage", rs.getString("PERTGE_OF_ACCTIVE_CORP_RCNO"));
 					}
 				} else
-					Percentage = null;
+					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-
-		return Percentage;
+		return cbnresp;
 	}
 
 	@Override
-	public String ActiveNIN() {
+	public cbnServiceResponse ActiveNIN() {
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		String Percentage = null;
+		Map<String, String> dataset = new HashMap<String, String>();
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 
 		try {
 			conn = dBConnect.getConn();
@@ -485,10 +536,11 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
-						Percentage = rs.getString("pertge_of_acctive_corp_NIN");
+						dataset.put("Percentage", rs.getString("pertge_of_acctive_corp_NIN"));
 					}
 				} else
-					Percentage = null;
+					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -496,17 +548,17 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
 
-		return Percentage;
+		return cbnresp;
 	}
 
 	@Override
-	public List<ListTIN_RCNo> LstTIN_RCNo() {
+	public cbnServiceResponse LstTIN_RCNo() {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 		List<ListTIN_RCNo> dataset = new ArrayList<ListTIN_RCNo>();
-		ListTIN_RCNo data = new ListTIN_RCNo();
 
 		try {
 			conn = dBConnect.getConn();
@@ -517,32 +569,34 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
+						ListTIN_RCNo data = new ListTIN_RCNo();
 						data.setNuban(rs.getString("NUBAN"));
 						data.setTIN(rs.getString("TIN"));
-						data.setRCNo(rs.getString("RC_NO"));
+						data.setRCNumber(rs.getString("RC_NO"));
 
 						dataset.add(data);
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public List<InternalAccounts> pr_ListInternalAccounts(String ledgerCode) {
+	public cbnServiceResponse pr_ListInternalAccounts(String ledgerCode) {
 		// TODO Auto-generated method stub
 
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 		List<InternalAccounts> dataset = new ArrayList<InternalAccounts>();
-		InternalAccounts data = new InternalAccounts();
 
 		try {
 			conn = dBConnect.getConn();
@@ -554,28 +608,30 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
-						data.setNuban(rs.getString("NUBAN"));
-						data.setNonNuban(rs.getString("NON_NUBAN"));
+						InternalAccounts data = new InternalAccounts();
+						data.setAccountNo(rs.getString("ACCOUN_NO"));
 
 						dataset.add(data);
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public List<InternalAccountsFull> pr_ListInternalAccountFull(String ledgerCode) {
+	public cbnServiceResponse pr_ListInternalAccountFull(String ledgerCode) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
+		cbnresp = new cbnServiceResponse("99", "Error", null);
 		List<InternalAccountsFull> dataset = new ArrayList<InternalAccountsFull>();
 
 		try {
@@ -589,32 +645,34 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				if (rs != null) {
 					while (rs.next()) {
 						InternalAccountsFull data = new InternalAccountsFull();
-						data.setNuban(rs.getString("NUBAN"));
-						data.setNonNuban(rs.getString("NON_NUBAN"));
+						data.setAccountNo(rs.getString("ACCOUN_NO"));
 						data.setStatus(rs.getString("STATUS"));
 						data.setCurrency(rs.getString("CURRENCY"));
 						data.setDescription(rs.getString("DESCRIPTION"));
+						data.setTRA_BAL(rs.getString("TRA_BAL"));
 
 						dataset.add(data);
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override
-	public List<String> InternalAccountsSignatories(String ledgerCode) {
+	public cbnServiceResponse InternalAccountsSignatories(String ledgerCode) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
-		List<String> dataset = new ArrayList<String>();
+		List<Map<String, String>> dataset = new ArrayList<>();
+		Map<String, String> data = new HashMap<String, String>();
 
 		try {
 			conn = dBConnect.getConn();
@@ -626,19 +684,20 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
-						String data = rs.getString("NAME");
+						data.put("Name",rs.getString("NAME"));
 
 						dataset.add(data);
 					}
 				} else
 					dataset = null;
+				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return dataset;
+		return cbnresp;
 	}
 
 	@Override

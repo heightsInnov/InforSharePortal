@@ -1,22 +1,27 @@
 package com.ubn.ciss.model;
 
-public class AccountDetails {
+public class AccountDetails extends cbnResponse2{
 
 	private String Name;
 	private String Type;
-	private String Status;
-	private String BVN;
 	private String Category;
 	private String Tier;
 	private String CLR_BAL;
 	private String AVL_BAL;
-	private String Nuban;
+	private String AccountNo;
 	private String Address;
 	private String Email;
 	private String Telephone;
 	private String Currency;
 	private String AOD;
+	private String BVN;
 	private String Account_Status;
+	private String Restriction_Status;
+	
+	
+	
+	
+	
 	
 	public String getName() {
 		return Name;
@@ -30,11 +35,11 @@ public class AccountDetails {
 	public void setType(String type) {
 		Type = type;
 	}
-	public String getStatus() {
-		return Status;
+	public String getRestriction_Status() {
+		return Restriction_Status;
 	}
-	public void setStatus(String status) {
-		Status = status;
+	public void setRestriction_Status(String Restriction_Status) {
+		this.Restriction_Status = Restriction_Status;
 	}
 	public String getBVN() {
 		return BVN;
@@ -66,11 +71,11 @@ public class AccountDetails {
 	public void setAVL_BAL(String aVL_BAL) {
 		AVL_BAL = aVL_BAL;
 	}
-	public String getNuban() {
-		return Nuban;
+	public String getAccountNo() {
+		return AccountNo;
 	}
-	public void setNuban(String nuban) {
-		Nuban = nuban;
+	public void setAccountNo(String AccountNo) {
+		this.AccountNo = AccountNo;
 	}
 	public String getAddress() {
 		return Address;

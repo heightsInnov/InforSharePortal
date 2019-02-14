@@ -4,32 +4,32 @@ public class ListTIN_RCNo {
 
 	String Nuban;
 	String TIN;
-	String RCNo;
+	String RCNumber;
 	
 	public ListTIN_RCNo() {}
 
 	public String getNuban() {
-		return Nuban;
+		return this.Nuban;
 	}
 
-	public void setNuban(String nuban) {
-		Nuban = nuban;
+	public void setNuban(String Nuban) {
+		this.Nuban = Nuban;
 	}
 
 	public String getTIN() {
-		return TIN;
+		return this.TIN;
 	}
 
-	public void setTIN(String tIN) {
-		TIN = tIN;
+	public void setTIN(String TIN) {
+		this.TIN = TIN;
 	}
 
-	public String getRCNo() {
-		return RCNo;
+	public String getRCNumber() {
+		return this.RCNumber;
 	}
 
-	public void setRCNo(String rCNo) {
-		RCNo = rCNo;
+	public void setRCNumber(String RCNumber) {
+		this.RCNumber = RCNumber;
 	}
 	
 	

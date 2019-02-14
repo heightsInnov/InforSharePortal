@@ -2,21 +2,14 @@ package com.ubn.ciss.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
-import com.ubn.ciss.model.InternalAccounts;
-import com.ubn.ciss.model.InternalAccountsFull;
-import com.ubn.ciss.model.ListAccountsByBVN;
 import com.ubn.ciss.model.ListStatistics;
-import com.ubn.ciss.model.ListTIN_RCNo;
-import com.ubn.ciss.model.Signatories;
-import com.ubn.ciss.model.SignatoriesWithNIN;
-import com.ubn.ciss.model.TransactionDetails;
+import com.ubn.ciss.model.cbnServiceResponse;
 import com.ubn.ciss.repository.CbnCissRepositoryImpl;
 
 @Service
@@ -41,14 +34,14 @@ public class CbnCissServiceImpl implements CbnCissService {
 	}
 
 	@Override
-	public TransactionDetails pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
+	public cbnServiceResponse pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_transactiondetails(!StartDt.isEmpty() ? convertDate(StartDt) : null,
 				!EndDt.isEmpty() ? convertDate(EndDt) : null, AccNo);
 	}
 
 	@Override
-	public TransactionDetails pr_transactionDetailsChannels(String StartDt, String EndDt, String AccNo) {
+	public cbnServiceResponse  pr_transactiondetailschannels(String StartDt, String EndDt, String AccNo) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_transactiondetailschannels(!StartDt.isEmpty() ? convertDate(StartDt) : null,
 				!EndDt.isEmpty() ? convertDate(EndDt) : null, AccNo);
@@ -67,75 +60,75 @@ public class CbnCissServiceImpl implements CbnCissService {
 	}
 
 	@Override
-	public Signatories pr_signatories(String AccNo) {
+	public cbnServiceResponse pr_signatories(String AccNo) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_signatories(AccNo);
 	}
 
 	@Override
-	public SignatoriesWithNIN pr_signatoriesWithNIN(String AccNo) {
+	public cbnServiceResponse pr_signatoriesWithNIN(String AccNo) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_signatoriesWithNIN(AccNo);
 	}
 
 	@Override
-	public List<ListAccountsByBVN> pr_listAccountsByBVN(String BVN) {
+	public cbnServiceResponse pr_listAccountsByBVN(String BVN) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_listAccountsByBVN(BVN);
 	}
 
 	@Override
-	public List<String> ListAccountsByRCNo(String RCNo) {
+	public cbnServiceResponse ListAccountsByRCNo(String RCNo) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.ListAccountsByRCNo(RCNo);
 	}
 
 	@Override
-	public List<String> ListAccountsByTIN(String TIN) {
+	public cbnServiceResponse ListAccountsByTIN(String TIN) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.ListAccountsByTIN(TIN);
 	}
 
 	@Override
-	public List<String> ListAccountsByNIN(String NIN) {
+	public cbnServiceResponse ListAccountsByNIN(String NIN) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.ListAccountsByNIN(NIN);
 	}
 
 	@Override
-	public String ActiveTIN() {
+	public cbnServiceResponse ActiveTIN() {
 		return cbnCissRepositoryImpl.ActiveTIN();
 	}
 
 	@Override
-	public String ActiveRCNo() {
+	public cbnServiceResponse ActiveRCNo() {
 		return cbnCissRepositoryImpl.ActiveRCNo();
 	}
 
 	@Override
-	public String ActiveNIN() {
+	public cbnServiceResponse ActiveNIN() {
 		return cbnCissRepositoryImpl.ActiveNIN();
 	}
 
 	@Override
-	public List<ListTIN_RCNo> LstTIN_RCNo() {
+	public cbnServiceResponse LstTIN_RCNo() {
 		return cbnCissRepositoryImpl.LstTIN_RCNo();
 	}
 
 	@Override
-	public List<InternalAccounts> pr_ListInternalAccounts(String ledgerCode) {
+	public cbnServiceResponse pr_ListInternalAccounts(String ledgerCode) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_ListInternalAccounts(ledgerCode);
 	}
 
 	@Override
-	public List<InternalAccountsFull> pr_ListInternalAccountFull(String ledgerCode) {
+	public cbnServiceResponse pr_ListInternalAccountFull(String ledgerCode) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_ListInternalAccountFull(ledgerCode);
 	}
 
 	@Override
-	public List<String> InternalAccountsSignatories(String ledgerCode) {
+	public cbnServiceResponse InternalAccountsSignatories(String ledgerCode) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.InternalAccountsSignatories(ledgerCode);
 	}
