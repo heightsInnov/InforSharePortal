@@ -1,8 +1,5 @@
 package com.ubn.ciss.model;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class cbnServiceResponse {
 
 	private String status;
