@@ -1,7 +1,9 @@
 package com.ubn.ciss.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({"status","Msg","Result"})
 public class cbnServiceResponse {
 
 	private String status;

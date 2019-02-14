@@ -117,7 +117,7 @@ public class HomeController {
 	}
 	
 	@GetMapping("/ListStatistics")
-	public @ResponseBody ListStatistics List_Statistics(@RequestBody ServiceRequest request) {
+	public @ResponseBody ListStatistics List_Statistics() {
 		return cbnCissService.List_Statistics();
 	}
 	
