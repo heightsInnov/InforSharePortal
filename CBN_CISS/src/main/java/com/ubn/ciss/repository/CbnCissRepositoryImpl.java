@@ -155,8 +155,8 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 					while (rs.next()) {
 						dataset.setStatus("00");
 						dataset.setMsg("Successful");
-						dataset.setName(rs.getString("ACCOUNT_HOLDER"));
-						dataset.setType(rs.getString("ACCOUNT_TYPE"));
+						dataset.setName(rs.getString("NAME"));
+						dataset.setType(rs.getString("TYPE"));
 						dataset.setCategory(rs.getString("CATEGORY"));
 						dataset.setTier(rs.getString("TIER"));
 						dataset.setCLR_BAL(rs.getString("CLR_BAL"));
@@ -203,8 +203,8 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 					while (rs.next()) {
 						dataset.setStatus("00");
 						dataset.setMsg("Successful");
-						dataset.setName(rs.getString("ACCOUNT_HOLDER"));
-						dataset.setType(rs.getString("ACCOUNT_TYPE"));
+						dataset.setName(rs.getString("NAME"));
+						dataset.setType(rs.getString("TYPE"));
 						dataset.setCategory(rs.getString("CATEGORY"));
 						dataset.setTier(rs.getString("TIER"));
 						dataset.setCLR_BAL(rs.getString("CLR_BAL"));
