@@ -18,11 +18,6 @@ public class AccountDetails extends cbnResponse2{
 	private String Account_Status;
 	private String Restriction_Status;
 	
-	
-	
-	
-	
-	
 	public String getName() {
 		return Name;
 	}

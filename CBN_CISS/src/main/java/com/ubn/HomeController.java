@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
+import com.ubn.ciss.model.ClosedStatistics;
+import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
 import com.ubn.ciss.model.ServiceRequest;
 import com.ubn.ciss.model.cbnServiceResponse;
@@ -115,5 +117,20 @@ public class HomeController {
 	@GetMapping("/ListStatistics")
 	public @ResponseBody ListStatistics List_Statistics(@RequestBody ServiceRequest request) {
 		return cbnCissService.List_Statistics();
+	}
+	
+	@GetMapping("/DormantStatistics")
+	public @ResponseBody DormantStatistics Dormant_Statistics() {
+		return cbnCissService.Dormant_Statistics();
+	}
+	
+	@GetMapping("/ClosedStatistics")
+	public @ResponseBody ClosedStatistics Closed_Statistics() {
+		return cbnCissService.Closed_Statistics();
+	}
+	
+	@PostMapping("/PendingDebits")
+	public @ResponseBody cbnServiceResponse PendingDebits(@RequestBody ServiceRequest request) {
+		return cbnCissService.PendingDebit(request.getAccountNo());
 	}
 }

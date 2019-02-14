@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
+import com.ubn.ciss.model.ClosedStatistics;
+import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.InternalAccounts;
 import com.ubn.ciss.model.InternalAccountsFull;
 import com.ubn.ciss.model.ListAccountsByBVN;
@@ -25,7 +27,7 @@ import com.ubn.ciss.model.TransactionDetailsChannels;
 import com.ubn.ciss.model.cbnServiceResponse;
 import com.ubn.ciss.utils.DBConnect;
 import com.ubn.ciss.model.ListTIN_RCNo;
-
+import com.ubn.ciss.model.PendingDebits;
 import oracle.jdbc.OracleTypes;
 
 @Repository
@@ -717,6 +719,8 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(1);
 				if (rs != null) {
 					while (rs.next()) {
+						dataset.setStatus("00");
+						dataset.setMsg("Successful");
 						dataset.setActiveAccounts(rs.getString("ACTIVEACCOUNTS"));
 						dataset.setActiveCorporate(rs.getString("ACTIVECORPORATE"));
 						dataset.setActiveindividual(rs.getString("ACTIVEINDIVIDUAL"));
@@ -733,5 +737,124 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
 		return dataset;
+	}
+	
+	public DormantStatistics Dormant_Statistics() {
+		// TODO Auto-generated method stub
+				Connection conn = null;
+				CallableStatement cll = null;
+				ResultSet rs = null;
+				DormantStatistics dataset = new DormantStatistics();
+				
+				try {
+					conn = dBConnect.getConn();
+					cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_DormantStatistics(?)}");
+					cll.registerOutParameter(1, OracleTypes.CURSOR);
+
+					if (cll.executeUpdate() != Statement.EXECUTE_FAILED) {
+						rs = (ResultSet) cll.getObject(1);
+						if (rs != null) {
+							while (rs.next()) {
+								dataset.setStatus("00");
+								dataset.setMsg("Successful");
+								dataset.setDormantAccounts(rs.getString("DORMANTACCOUNTS"));
+								dataset.setDormantAccountsAmt(rs.getString("DORMANTACCOUNTSAMT"));
+								dataset.setDormantCorporate(rs.getString("DORMANTCORPORATE"));
+								dataset.setDormantCorpAccountsAmt(rs.getString("DORMANTCORPACCOUNTSAMT"));
+								dataset.setDormantIndividual(rs.getString("DORMANTINDIVIDUAL"));
+								dataset.setDormantIndAccountsAmt(rs.getString("DORMANTINDACCOUNTSAMT"));
+								dataset.setDormantTier1(rs.getString("DORMANTTIER1"));
+								dataset.setDormantTier2(rs.getString("DORMANTTIER2"));
+								dataset.setDormantTier3(rs.getString("DORMANTTIER3"));
+							}
+						} else
+							dataset = null;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					dBConnect.CloseConnect(conn, cll, rs);
+				}
+				
+		return dataset;
+	}
+	
+	@Override
+	public ClosedStatistics Closed_Statistics() {
+		// TODO Auto-generated method stub
+				Connection conn = null;
+				CallableStatement cll = null;
+				ResultSet rs = null;
+				ClosedStatistics dataset = new ClosedStatistics();
+				
+				try {
+					conn = dBConnect.getConn();
+					cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_ClosedStatistics(?)}");
+					cll.registerOutParameter(1, OracleTypes.CURSOR);
+
+					if (cll.executeUpdate() != Statement.EXECUTE_FAILED) {
+						rs = (ResultSet) cll.getObject(1);
+						if (rs != null) {
+							while (rs.next()) {
+								dataset.setStatus("00");
+								dataset.setMsg("Successful");
+								dataset.setClosedAccounts(rs.getString("CLOSEDACCOUNTS"));
+								dataset.setClosedCorporate(rs.getString("CLOSEDCORPORATE"));
+								dataset.setClosedIndividual(rs.getString("CLOSEDINDIVIDUAL"));
+								dataset.setClosedTier1(rs.getString("CLOSEDTIER1"));
+								dataset.setClosedTier2(rs.getString("CLOSEDTIER2"));
+								dataset.setClosedTier3(rs.getString("CLOSEDTIER3"));
+							}
+						} else
+							dataset = null;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					dBConnect.CloseConnect(conn, cll, rs);
+				}
+				
+		return dataset;
+	}
+	
+	@Override
+	public cbnServiceResponse PendingDebit(String AccountNo) {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		CallableStatement cll = null;
+		ResultSet rs = null;
+		cbnServiceResponse resultSet = new cbnServiceResponse("99", "Unsuccessful", null);
+		List<PendingDebits> dataset = new ArrayList<PendingDebits>();
+
+		try {
+			conn = dBConnect.getConn();
+			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_PendingDebits(?,?)}");
+			cll.setString(1, AccountNo);
+			cll.registerOutParameter(2, OracleTypes.CURSOR);
+
+			if (cll.executeUpdate() != Statement.EXECUTE_FAILED) {
+				rs = (ResultSet) cll.getObject(2);
+				if (rs != null) {
+					while (rs.next()) {
+						PendingDebits data = new PendingDebits();
+						data.setBeneficiaryAccountNo(rs.getString("BENEFICIARYACCOUNTNO"));
+						data.setBeneficiaryBank(rs.getString("BENEFICIARYBANK"));
+						data.setInitiatedDate(rs.getString("INITIATEDDATE"));
+						data.setPaymentDate(rs.getString("PAYMENTDATE"));
+						data.setType(rs.getString("TYPE"));
+						
+						dataset.add(data);
+					}
+				} else {
+					dataset = null;
+				}
+				resultSet = new cbnServiceResponse("00","Successful",dataset);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dBConnect.CloseConnect(conn, cll, rs);
+		}
+		return resultSet;
 	}
 }

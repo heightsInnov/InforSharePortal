@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
+import com.ubn.ciss.model.ClosedStatistics;
+import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
 import com.ubn.ciss.model.cbnServiceResponse;
 import com.ubn.ciss.repository.CbnCissRepositoryImpl;
@@ -137,5 +139,20 @@ public class CbnCissServiceImpl implements CbnCissService {
 	public ListStatistics List_Statistics() {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.List_Statistics();
+	}
+	
+	@Override
+	public DormantStatistics Dormant_Statistics() {
+		return cbnCissRepositoryImpl.Dormant_Statistics();
+	}
+	
+	@Override
+	public ClosedStatistics Closed_Statistics() {
+		return cbnCissRepositoryImpl.Closed_Statistics();
+	}
+	
+	@Override
+	public cbnServiceResponse PendingDebit(String AccountNo) {
+		return cbnCissRepositoryImpl.PendingDebit(AccountNo);
 	}
 }
