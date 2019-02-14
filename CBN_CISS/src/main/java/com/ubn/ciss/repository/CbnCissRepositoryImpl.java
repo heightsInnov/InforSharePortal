@@ -59,7 +59,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				if (rs != null) {
 					while (rs.next()) {
 						TransactionDetails dataset = new TransactionDetails();
-                        dataset.setName(rs.getString("Name"));
+                        dataset.setName(rs.getString("NAME"));
 						dataset.setTRA_DATE(rs.getString("TRA_DATE"));
 						dataset.setVal_DATE(rs.getString("VAL_DATE"));
 						dataset.setNarration(rs.getString("NARRATION"));
