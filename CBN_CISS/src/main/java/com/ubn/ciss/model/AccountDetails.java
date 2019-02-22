@@ -31,7 +31,7 @@ public class AccountDetails extends cbnResponse2 {
 	public void setName(String name) {
 		Name = name;
 	}
-
+	
 	@JsonProperty("Type")
 	public String getType() {
 		return Type;

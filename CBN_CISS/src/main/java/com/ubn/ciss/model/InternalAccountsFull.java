@@ -3,7 +3,7 @@ package com.ubn.ciss.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"status","Currency","Description","TRA_BAL"})
+@JsonPropertyOrder({"AccountNo","status","Description","Currency","TRA_BAL"})
 public class InternalAccountsFull extends InternalAccounts{
 
 	private String status;

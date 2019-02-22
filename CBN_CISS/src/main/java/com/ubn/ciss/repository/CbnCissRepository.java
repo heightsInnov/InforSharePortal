@@ -3,6 +3,7 @@ package com.ubn.ciss.repository;
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
 import com.ubn.ciss.model.ActiveTIN;
+import com.ubn.ciss.model.CbnrespTransDetails;
 import com.ubn.ciss.model.ClosedStatistics;
 import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
@@ -10,7 +11,7 @@ import com.ubn.ciss.model.cbnServiceResponse;
 
 public interface CbnCissRepository {
 
-	cbnServiceResponse pr_transactiondetails(String StartDt, String EndDt, String AccNo);
+	CbnrespTransDetails pr_transactiondetails(String StartDt, String EndDt, String AccNo);
 	cbnServiceResponse  pr_transactiondetailschannels(String StartDt, String EndDt, String AccNo);
 	AccountDetails  pr_accountdetails(String AccNo);
 	AccountDetailsChannels  pr_accountdetailschannels(String AccNo);

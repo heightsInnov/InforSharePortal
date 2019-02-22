@@ -1,7 +1,9 @@
 package com.ubn.ciss.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+@JsonPropertyOrder({ "status","Msg","Name", "Type", "Category", "Tier", "CLR_BAL", "AVL_BAL", "AccountNo", "Address", "Email",
+	"Telephone", "Currency", "AOD", "BVN", "Account_Status", "RestrictionStatus","Tax_ID_No","NIN","RCNumber"})
 public class AccountDetailsChannels extends AccountDetails{
 
 	private String Tax_ID_Number;

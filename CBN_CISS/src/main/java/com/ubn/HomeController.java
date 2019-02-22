@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
 import com.ubn.ciss.model.ActiveTIN;
+import com.ubn.ciss.model.CbnrespTransDetails;
 import com.ubn.ciss.model.ClosedStatistics;
 import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
+import com.ubn.ciss.model.OauthResponse;
 import com.ubn.ciss.model.ServiceRequest;
 import com.ubn.ciss.model.cbnServiceResponse;
 import com.ubn.ciss.service.CbnCissServiceImpl;
@@ -30,14 +32,14 @@ public class HomeController {
 	}
 
 	@PostMapping("/TransactionDetails")
-	public @ResponseBody cbnServiceResponse transactionDetail(@RequestBody ServiceRequest request) {
+	public @ResponseBody CbnrespTransDetails transactionDetail(@RequestBody ServiceRequest request) {
 		return cbnCissService.pr_transactiondetails(request.getStartDate(), request.getEndDate(),
 				request.getAccountNo());
 	}
 
 	@PostMapping("/TransactionDetailsChannels")
 	public @ResponseBody cbnServiceResponse transactionDetailsChannel(@RequestBody ServiceRequest request) {
-		return cbnCissService.pr_transactiondetails(request.getStartDate(), request.getEndDate(),
+		return cbnCissService.pr_transactiondetailschannels(request.getStartDate(), request.getEndDate(),
 				request.getAccountNo());
 	}
 
@@ -134,5 +136,10 @@ public class HomeController {
 	@PostMapping("/PendingDebits")
 	public @ResponseBody cbnServiceResponse PendingDebits(@RequestBody ServiceRequest request) {
 		return cbnCissService.PendingDebit(request.getAccountNo());
+	}
+	
+	@PostMapping("/getToken")
+	public @ResponseBody OauthResponse getToken(@RequestBody ServiceRequest request) {
+		return cbnCissService.getToken(request.getUsername(), request.getPassword());
 	}
 }

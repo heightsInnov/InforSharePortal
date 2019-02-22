@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.ubn.ciss.model.ActiveTIN;
+import com.ubn.ciss.model.CbnrespTransDetails;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -34,20 +37,23 @@ import oracle.jdbc.OracleTypes;
 @Repository
 public class CbnCissRepositoryImpl implements CbnCissRepository {
 
+	Logger LOGGER = LoggerFactory.getLogger(CbnCissRepositoryImpl.class);
 	@Autowired
 	DBConnect dBConnect;
 
 	cbnServiceResponse cbnresp = null;
+	CbnrespTransDetails cbnresp1 = null;
 
 	@Override
-	public cbnServiceResponse pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
+	public CbnrespTransDetails pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		CallableStatement cll = null;
 		ResultSet rs = null;
 		List<TransactionDetails> data = new ArrayList<>();
-		cbnresp = new cbnServiceResponse("99", "Error", null);
-
+		cbnresp1 = new CbnrespTransDetails("99", "Error", null, null);
+		String Name = "";
+		
 		try {
 			conn = dBConnect.getConn();
 			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_transactiondetails(?,?,?,?)}");
@@ -71,20 +77,22 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 						dataset.setCR_AMT(rs.getString("CR_AMT"));
 						dataset.setSTART_BAL(rs.getString("START_BAL"));
 						dataset.setTRA_BAL(rs.getString("TRA_BAL"));
+						Name = rs.getString("NAME");
 						
 						data.add(dataset);
 					}
 				} else
 					data = null;
-				cbnresp = new cbnServiceResponse("00", "Successful", data);
+				cbnresp1 = new CbnrespTransDetails("00", "Successful", Name, data);
+				LOGGER.info("[pr_transactiondetails] -- Successful ("+AccNo+")");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			LOGGER.error("[pr_transactiondetails] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
-		return cbnresp;
+		return cbnresp1;
 	}
 
 	@Override
@@ -126,10 +134,11 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				} else
 					data = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", data);
+				LOGGER.info("[pr_transactionchannels] -- Successful ("+AccNo+")");
 			}
 		} catch (Exception e) {
 			// TODO: handle finally clause
-			e.printStackTrace();
+			LOGGER.error("[pr_transactionchannels] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -172,12 +181,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 						dataset.setAccount_Status(rs.getString("ACCOUNT_STATUS"));
 						dataset.setRestriction_Status(rs.getString("RESTRICTION_STATUS"));
 					}
+					LOGGER.info("[pr_accountdetails] -- Successful ("+AccNo+")");
 				} else
 					dataset = null;
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			LOGGER.error("[pr_accountdetails] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -223,12 +233,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 						dataset.setNIN(rs.getString("NIN"));
 						dataset.setRC_Number(rs.getString("RC_NUMBER"));
 					}
+					LOGGER.info("[pr_accountdetailschannels] -- Successful ("+AccNo+")");
 				} else
 					dataset = null;
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			LOGGER.error("[pr_accountdetailschannels] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -260,13 +271,14 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						data.add(dataset);
 					}
+					LOGGER.info("[pr_signatories] -- Successful ("+AccNo+")");
 				} else {
 					data = null;
 				}
 				cbnresp = new cbnServiceResponse("00", "Successful", data);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[pr_signatories] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -300,12 +312,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						data.add(dataset);
 					}
+					LOGGER.info("[pr_signatoriesWithNIN] -- Successful ("+AccNo+")");
 				} else
 					data = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", data);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[pr_signatoriesWithNIN] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -323,7 +336,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 		try {
 			conn = dBConnect.getConn();
-			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_ListAccountsByBVN(?,?)}");
+			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_listaccountsbybvn(?,?)}");
 			cll.setString(1, BVN);
 			cll.registerOutParameter(2, OracleTypes.CURSOR);
 
@@ -339,12 +352,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						dataset.add(data);
 					}
+					LOGGER.info("[pr_listAccountsByBVN] -- Successful ("+BVN+")");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[pr_listAccountsByBVN] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -375,12 +389,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						dataset.add(acc);
 					}
+					LOGGER.info("[ListAccountsByRCNo] -- Successful ("+RCNo+")");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[ListAccountsByRCNo] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -398,7 +413,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 		try {
 			conn = dBConnect.getConn();
-			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_listAccountsByTIN(?,?)}");
+			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_listaccountsbytin(?,?)}");
 			cll.setString(1, TIN);
 			cll.registerOutParameter(2, OracleTypes.CURSOR);
 
@@ -408,15 +423,17 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 					while (rs.next()) {
 						Map<String, String> acc = new HashMap<String, String>();
 						acc.put("Nuban", rs.getString("NUBAN"));
+						System.out.println(rs.getString("NUBAN"));
 
 						dataset.add(acc);
 					}
+					LOGGER.info("[ListAccountsByTIN] -- Successful ("+TIN+")");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[ListAccountsByTIN] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -447,12 +464,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						dataset.add(acc);
 					}
+					LOGGER.info("[ListAccountsByNIN] -- Successful ("+NIN+")");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[ListAccountsByNIN] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -477,10 +495,11 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 					while (rs.next()) {
 						dataset = new ActiveTIN("00", "Successful", rs.getString("PERCENTAGE_OF_ACCTIVE_CORP_TIN"));
 					}
+					LOGGER.info("[getActiveTIN] -- Successful");
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[getActiveTIN] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -505,11 +524,12 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 					while (rs.next()) {
 						dataset = new ActiveTIN("00", "Successful", rs.getString("PERTGE_OF_ACCTIVE_CORP_RCNO"));
 					}
+					LOGGER.info("[ActiveRCNo] -- Successful");
 				} else
 					dataset = null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[ActiveRCNo] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -534,10 +554,11 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 					while (rs.next()) {
 						dataset = new ActiveTIN("00", "Successful", rs.getString("pertge_of_acctive_corp_NIN"));
 					}
+					LOGGER.info("[ActiveNIN] -- Successful");
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[ActiveNIN] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -570,12 +591,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						dataset.add(data);
 					}
+					LOGGER.info("[LstTIN_RCNo] -- Successful");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[LstTIN_RCNo] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -607,12 +629,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						dataset.add(data);
 					}
+					LOGGER.info("[pr_ListInternalAccounts] -- Successful ("+ledgerCode+")");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[LstTIN_RCNo] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -630,7 +653,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 		try {
 			conn = dBConnect.getConn();
-			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_ListInternalAccountsFull(?,?)}");
+			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_listinternalaccountsfull(?,?)}");
 			cll.setString(1, ledgerCode);
 			cll.registerOutParameter(2, OracleTypes.CURSOR);
 
@@ -647,12 +670,13 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 
 						dataset.add(data);
 					}
+					LOGGER.info("[pr_ListInternalAccountFull] -- Successful ("+ledgerCode+")");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[pr_ListInternalAccountFull] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -678,16 +702,17 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 				rs = (ResultSet) cll.getObject(2);
 				if (rs != null) {
 					while (rs.next()) {
-						data.put("Name",rs.getString("NAME"));
+						data.put("Name",rs.getString("AC_GL_DESC"));
 
 						dataset.add(data);
 					}
+					LOGGER.info("[InternalAccountsSignatories] -- Successful ("+ledgerCode+")");
 				} else
 					dataset = null;
 				cbnresp = new cbnServiceResponse("00", "Successful", dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[InternalAccountsSignatories] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -720,11 +745,12 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 						dataset.setActiveTier2(rs.getString("ACTIVETIER2"));
 						dataset.setActiveTier3(rs.getString("ACTIVETIER3"));
 					}
+					LOGGER.info("[List_Statistics] -- Successful");
 				} else
 					dataset = null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[List_Statistics] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}
@@ -759,11 +785,12 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 								dataset.setDormantTier2(rs.getString("DORMANTTIER2"));
 								dataset.setDormantTier3(rs.getString("DORMANTTIER3"));
 							}
+							LOGGER.info("[Dormant_Statistics] -- Successful");
 						} else
 							dataset = null;
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOGGER.error("[Dormant_Statistics] -- Error ("+e.getMessage()+")");
 				} finally {
 					dBConnect.CloseConnect(conn, cll, rs);
 				}
@@ -797,11 +824,12 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 								dataset.setClosedTier2(rs.getString("CLOSEDTIER2"));
 								dataset.setClosedTier3(rs.getString("CLOSEDTIER3"));
 							}
+							LOGGER.info("[Closed_Statistics] -- Successful");
 						} else
 							dataset = null;
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOGGER.error("[Closed_Statistics] -- Error ("+e.getMessage()+")");
 				} finally {
 					dBConnect.CloseConnect(conn, cll, rs);
 				}
@@ -837,13 +865,14 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 						
 						dataset.add(data);
 					}
+					LOGGER.info("[Closed_Statistics] -- Successful ("+AccountNo+")");
 				} else {
 					dataset = null;
 				}
 				resultSet = new cbnServiceResponse("00","Successful",dataset);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("[Closed_Statistics] -- Error ("+e.getMessage()+")");
 		} finally {
 			dBConnect.CloseConnect(conn, cll, rs);
 		}

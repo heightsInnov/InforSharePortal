@@ -3,7 +3,7 @@ package com.ubn.ciss.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"DormantAccounts","DormantAccountsAmt","DormantCorporate","DormantCorpAccountsAmt",
+@JsonPropertyOrder({"status","Msg","DormantAccounts","DormantAccountsAmt","DormantCorporate","DormantCorpAccountsAmt",
 	"DormantIndividual","DormantIndAccountsAmt","DormantTier1","DormantTier2","DormantTier3"})
 public class DormantStatistics extends cbnResponse2{
 

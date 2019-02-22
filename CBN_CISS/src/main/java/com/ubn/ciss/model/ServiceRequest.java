@@ -1,17 +1,42 @@
 package com.ubn.ciss.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ServiceRequest {
 
+	@JsonProperty("StartDate")
 	private String startDate;
+	@JsonProperty("EndDate")
 	private String endDate;
+	@JsonProperty("AccountNo")
 	private String accountNo;
+	@JsonProperty("BVN")
 	private String bvn;
+	@JsonProperty("RCNo")
 	private String rcNo;
+	@JsonProperty("TIN")
 	private String tin;
+	@JsonProperty("NIN")
 	private String nin;
+	@JsonProperty("LedgerCode")
 	private String ledgerCode;
+	@JsonProperty("username")
+	private String username;
+	@JsonProperty("password")
+	private String password;
 
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getLedgerCode() {
 		return ledgerCode;
 	}

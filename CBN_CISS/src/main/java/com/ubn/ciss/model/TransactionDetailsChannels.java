@@ -1,7 +1,12 @@
 package com.ubn.ciss.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({"TRA_DATE","Val_DATE","Narration","Currency","TRA_AMT","TRA_TYPE","DR_AMT",
+	"CR_AMT","TRA_BAL","TRA_CHANNEL","Payment_type"})
+@JsonIgnoreProperties(value = {"START_BAL"})
 public class TransactionDetailsChannels extends TransactionDetails{
 
 	private String TRA_CHANNEL;

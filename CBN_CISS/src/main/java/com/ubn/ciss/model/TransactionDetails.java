@@ -3,10 +3,10 @@ package com.ubn.ciss.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"Name","TRA_DATE","Val_DATE","Narration","Currency","TRA_AMT","TRA_TYPE","DR_AMT",
+@JsonPropertyOrder({"TRA_DATE","Val_DATE","Narration","Currency","TRA_AMT","TRA_TYPE","DR_AMT",
 	"CR_AMT","START_BAL","TRA_BAL"})
 public class TransactionDetails {
-	private String Name;
+	
 	private String TRA_DATE;
 	private String Val_DATE;
 	private String Narration;
@@ -17,15 +17,7 @@ public class TransactionDetails {
 	private String CR_AMT;
 	private String START_BAL;
 	private String TRA_BAL;
-	
-	@JsonProperty("Name")
-	public String getName() {
-		return Name;
-	}
-	public void setName(String name) {
-		Name = name;
-	}
-	
+
 	@JsonProperty("TRA_DATE")
 	public String getTRA_DATE() {
 		return TRA_DATE;

@@ -9,17 +9,23 @@ import org.springframework.stereotype.Service;
 import com.ubn.ciss.model.AccountDetails;
 import com.ubn.ciss.model.AccountDetailsChannels;
 import com.ubn.ciss.model.ActiveTIN;
+import com.ubn.ciss.model.CbnrespTransDetails;
 import com.ubn.ciss.model.ClosedStatistics;
 import com.ubn.ciss.model.DormantStatistics;
 import com.ubn.ciss.model.ListStatistics;
+import com.ubn.ciss.model.OauthResponse;
 import com.ubn.ciss.model.cbnServiceResponse;
 import com.ubn.ciss.repository.CbnCissRepositoryImpl;
+import com.ubn.config.TokenGenerator;
 
 @Service
 public class CbnCissServiceImpl implements CbnCissService {
 
 	@Autowired
 	CbnCissRepositoryImpl cbnCissRepositoryImpl;
+	
+	@Autowired
+	TokenGenerator tokenGenerator;
 
 	private String convertDate(String strDate) {
 		String convdate = "";
@@ -37,7 +43,7 @@ public class CbnCissServiceImpl implements CbnCissService {
 	}
 
 	@Override
-	public cbnServiceResponse pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
+	public CbnrespTransDetails pr_transactiondetails(String StartDt, String EndDt, String AccNo) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_transactiondetails(!StartDt.isEmpty() ? convertDate(StartDt) : null,
 				!EndDt.isEmpty() ? convertDate(EndDt) : null, AccNo);
@@ -155,5 +161,10 @@ public class CbnCissServiceImpl implements CbnCissService {
 	@Override
 	public cbnServiceResponse PendingDebit(String AccountNo) {
 		return cbnCissRepositoryImpl.PendingDebit(AccountNo);
+	}
+	
+	@Override
+	public OauthResponse getToken(String user, String pass) {
+		return tokenGenerator.getToken(user, pass);
 	}
 }

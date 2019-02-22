@@ -3,7 +3,7 @@ package com.ubn.ciss.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "ClosedAccounts", "ClosedCorporate", "ClosedIndividual", "ClosedTier1", "ClosedTier2",
+@JsonPropertyOrder({ "status","Msg","ClosedAccounts", "ClosedCorporate", "ClosedIndividual", "ClosedTier1", "ClosedTier2",
 		"ClosedTier3" })
 public class ClosedStatistics extends cbnResponse2 {
 
