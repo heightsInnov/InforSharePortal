@@ -59,11 +59,11 @@ public class TokenGenerator {
 					JSONObject jsonObject = new JSONObject(result);
 					if (jsonObject.has("access_token")) {
 						resp.setAccess_token(jsonObject.getString("access_token"));
-						resp.setExpires_in(jsonObject.getString("expires_in"));
 						resp.setRefresh_token(jsonObject.getString("refresh_token"));
 						resp.setToken_type(jsonObject.getString("token_type"));
 						resp.setScope(jsonObject.getString("scope"));
 						resp.setJti(jsonObject.getString("jti"));
+						resp.setExpires_in(String.valueOf(jsonObject.getInt("expires_in")));
 					}
 				}
 			} else {
