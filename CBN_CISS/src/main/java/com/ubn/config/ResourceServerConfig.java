@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -58,5 +59,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
 		defaultTokenServices.setTokenStore(tokenStore());
 		return defaultTokenServices;
+	}
+	
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/getToken").permitAll().anyRequest().authenticated();
 	}
 }
