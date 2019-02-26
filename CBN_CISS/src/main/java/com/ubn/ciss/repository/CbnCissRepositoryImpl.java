@@ -231,7 +231,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 						dataset.setRestriction_Status(rs.getString("RESTRICTION_STATUS"));
 						dataset.setTax_ID_Number(rs.getString("TAX_ID_NUMBER"));
 						dataset.setNIN(rs.getString("NIN"));
-						dataset.setRC_Number(rs.getString("RC_NUMBER"));
+						dataset.setRC_Number(rs.getString("RCNUMBER"));
 					}
 					LOGGER.info("[pr_accountdetailschannels] -- Successful ("+AccNo+")");
 				} else
@@ -256,7 +256,7 @@ public class CbnCissRepositoryImpl implements CbnCissRepository {
 		cbnresp = new cbnServiceResponse("99", "Error", null);
 		try {
 			conn = dBConnect.getConn();
-			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_signatoriesWithNIN(?,?)}");
+			cll = conn.prepareCall("{call ubn_cbn_info_shared_pkg.pr_Signatories(?,?)}");
 			cll.setString(1, AccNo);
 			cll.registerOutParameter(2, OracleTypes.CURSOR);
 
