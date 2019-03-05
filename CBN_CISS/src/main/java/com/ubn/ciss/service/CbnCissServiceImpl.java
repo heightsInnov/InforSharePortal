@@ -1,5 +1,6 @@
 package com.ubn.ciss.service;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,16 +17,16 @@ import com.ubn.ciss.model.ListStatistics;
 import com.ubn.ciss.model.OauthResponse;
 import com.ubn.ciss.model.cbnServiceResponse;
 import com.ubn.ciss.repository.CbnCissRepositoryImpl;
-import com.ubn.config.TokenGenerator;
+import com.ubn.config.GenerateToken;
 
 @Service
 public class CbnCissServiceImpl implements CbnCissService {
 
 	@Autowired
 	CbnCissRepositoryImpl cbnCissRepositoryImpl;
-	
+
 	@Autowired
-	TokenGenerator tokenGenerator;
+	GenerateToken tokenGenerator;
 
 	private String convertDate(String strDate) {
 		String convdate = "";
@@ -50,7 +51,7 @@ public class CbnCissServiceImpl implements CbnCissService {
 	}
 
 	@Override
-	public cbnServiceResponse  pr_transactiondetailschannels(String StartDt, String EndDt, String AccNo) {
+	public cbnServiceResponse pr_transactiondetailschannels(String StartDt, String EndDt, String AccNo) {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.pr_transactiondetailschannels(!StartDt.isEmpty() ? convertDate(StartDt) : null,
 				!EndDt.isEmpty() ? convertDate(EndDt) : null, AccNo);
@@ -147,24 +148,36 @@ public class CbnCissServiceImpl implements CbnCissService {
 		// TODO Auto-generated method stub
 		return cbnCissRepositoryImpl.List_Statistics();
 	}
-	
+
 	@Override
 	public DormantStatistics Dormant_Statistics() {
 		return cbnCissRepositoryImpl.Dormant_Statistics();
 	}
-	
+
 	@Override
 	public ClosedStatistics Closed_Statistics() {
 		return cbnCissRepositoryImpl.Closed_Statistics();
 	}
-	
+
 	@Override
 	public cbnServiceResponse PendingDebit(String AccountNo) {
 		return cbnCissRepositoryImpl.PendingDebit(AccountNo);
 	}
-	
+
 	@Override
 	public OauthResponse getToken(String user, String pass) {
-		return tokenGenerator.getToken(user, pass);
+		OauthResponse resp = null;
+		try {
+			resp = tokenGenerator.getToken(user, pass);
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+		return resp;
+	}
+
+	@Override
+	public void saveClientDetails(String clientip, String methodname) {
+		// TODO Auto-generated method stub
+		cbnCissRepositoryImpl.saveClientDetails(clientip, methodname);
 	}
 }

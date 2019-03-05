@@ -71,7 +71,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- SLF4J/Logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

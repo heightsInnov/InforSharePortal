@@ -34,4 +34,5 @@ public interface CbnCissService {
 	ClosedStatistics Closed_Statistics();
 	cbnServiceResponse PendingDebit(String AccountNo);
 	OauthResponse getToken(String user, String pass);
+	void saveClientDetails(String clientip, String methodname);
 }
